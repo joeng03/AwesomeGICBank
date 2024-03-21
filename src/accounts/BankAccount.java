@@ -2,6 +2,10 @@ package accounts;
 
 import java.util.ArrayList;
 
+import exceptions.BankAccountOperationException;
+import exceptions.DepositAmountNonPositiveException;
+import exceptions.WithdrawAmountExceedDepositException;
+import exceptions.WithdrawAmountNonPositiveException;
 import transactions.Transaction;
 
 /**
@@ -16,7 +20,7 @@ public class BankAccount {
      */
     public BankAccount() {
         balance = 0.0;
-        transactions = new ArrayList<Transaction>();
+        transactions = new ArrayList<>();
 
         assert balance >= 0.0 : "Balance should be non-negative after initializing BankAccount.";
     }
@@ -25,8 +29,12 @@ public class BankAccount {
      * Method to deposit an amount into the account.
      * @param amount The amount to be deposited.
      */
-    public void deposit(double amount) {
+    public void deposit(double amount) throws BankAccountOperationException {
         assert balance >= 0.0 : "Balance should be non-negative before depositing.";
+
+        if(amount < 0.0) {
+            throw new DepositAmountNonPositiveException();
+        }
 
         balance += amount;
         transactions.add(new Transaction(amount, balance));
@@ -38,8 +46,16 @@ public class BankAccount {
      * Method to withdraw an amount from the account.
      * @param amount The amount to be withdrawn.
      */
-    public void withdraw(double amount) {
+    public void withdraw(double amount) throws BankAccountOperationException {
         assert balance >= 0.0 : "Balance should be non-negative before withdrawing.";
+
+        if(amount < 0.0) {
+            throw new WithdrawAmountNonPositiveException();
+        }
+
+        if(amount > balance) {
+            throw new WithdrawAmountExceedDepositException();
+        }
 
         balance -= amount;
         transactions.add(new Transaction(-amount, balance));

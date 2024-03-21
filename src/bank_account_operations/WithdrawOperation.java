@@ -3,6 +3,7 @@ package bank_account_operations;
 import java.util.Scanner;
 
 import accounts.BankAccount;
+import exceptions.BankAccountOperationException;
 
 /**
  * Concrete implementation of BankAccountOperation interface for withdraw action.
@@ -19,7 +20,7 @@ public class WithdrawOperation implements BankAccountOperation {
         this.account = account;
     }
 
-    public void execute() {
+    public void execute() throws BankAccountOperationException {
         System.out.println(WITHDRAW_MESSAGE);
         double withdrawAmount = scanner.nextDouble();
         account.withdraw(withdrawAmount);
