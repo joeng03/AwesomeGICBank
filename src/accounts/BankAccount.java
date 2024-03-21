@@ -32,7 +32,7 @@ public class BankAccount {
     public void deposit(double amount) throws BankAccountOperationException {
         assert balance >= 0.0 : "Balance should be non-negative before depositing.";
 
-        if(amount < 0.0) {
+        if(amount <= 0.0) {
             throw new DepositAmountNonPositiveException();
         }
 
@@ -49,7 +49,7 @@ public class BankAccount {
     public void withdraw(double amount) throws BankAccountOperationException {
         assert balance >= 0.0 : "Balance should be non-negative before withdrawing.";
 
-        if(amount < 0.0) {
+        if(amount <= 0.0) {
             throw new WithdrawAmountNonPositiveException();
         }
 
@@ -69,7 +69,7 @@ public class BankAccount {
     public void printStatement() {
         assert balance >= 0.0 : "Balance should be non-negative before printing bank statement.";
 
-        System.out.println("Date\t\t\t| Amount\t| Balance");
+        System.out.println("Date\t\t\t\t\t| Amount\t| Balance");
         for (Transaction transaction : transactions) {
             System.out.println(transaction);
         }

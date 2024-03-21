@@ -12,7 +12,7 @@ import exceptions.DepositAmountNonPositiveException;
 public class DepositOperation implements BankAccountOperation {
     public static final String DEPOSIT_MESSAGE = "Please enter the amount to deposit:";
 
-    public static final String THANK_YOU_DEPOSIT = "Thank you. $%.2f has been deposited to your account.";
+    public static final String THANK_YOU_DEPOSIT = "Thank you. $%.2f has been deposited to your account.\n";
     private Scanner scanner;
     private BankAccount account;
 

@@ -51,7 +51,7 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return String.format("%s\t| %.2f\t\t| %.2f\n", this.getDate(), this.getAmount(), this.getBalance());
+        return String.format("%s\t| %.2f\t| %.2f\t", this.getDate(), this.getAmount(), this.getBalance());
     }
 }
 

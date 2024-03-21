@@ -10,7 +10,7 @@ import exceptions.BankAccountOperationException;
  */
 public class WithdrawOperation implements BankAccountOperation {
     public static final String WITHDRAW_MESSAGE = "Please enter the amount to withdraw:";
-    public static final String THANK_YOU_WITHDRAW = "Thank you. $%.2f has been withdrawn.";
+    public static final String THANK_YOU_WITHDRAW = "Thank you. $%.2f has been withdrawn.\n";
 
     private Scanner scanner;
     private BankAccount account;
