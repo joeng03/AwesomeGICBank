@@ -13,15 +13,8 @@ import exceptions.BankAccountOperationException;
 public class BankTeller {
     public static final String WELCOME_MESSAGE = "Welcome to AwesomeGIC Bank! What would you like to do?";
     public static final String INVALID_OPTION_MESSAGE = "Invalid option. Please select again.";
-    public static final String PROMPT_MESSAGE = "Is there anything else you'd like to do?\n[D]eposit\n[W]ithdraw\n[P]rint statement\n[Q]uit";
-
-    public static final String DEPOSIT_COMMAND_MESSAGE = "[D]eposit";
-
-    public static final String WITHDRAW_COMMAND_MESSAGE = "[W]ithdraw";
-
-    public static final String PRINT_STATEMENT_COMMAND_MESSAGE = "[P]rint statement";
-
-    public static final String QUIT_COMMAND_MESSAGE = "[Q]uit";
+    public static final String OPTIONS_LIST_MESSAGE = "[D]eposit\n[W]ithdraw\n[P]rint statement\n[Q]uit";
+    public static final String PROMPT_MESSAGE = "Is there anything else you'd like to do?\n";
 
 
     // Method to start the BankTeller service.
@@ -31,10 +24,7 @@ public class BankTeller {
         BankAccountOperationFactory operationFactory = new BankAccountOperationFactory();
 
         System.out.println(WELCOME_MESSAGE);
-        System.out.println(DEPOSIT_COMMAND_MESSAGE);
-        System.out.println(WITHDRAW_COMMAND_MESSAGE);
-        System.out.println(PRINT_STATEMENT_COMMAND_MESSAGE);
-        System.out.println(QUIT_COMMAND_MESSAGE);
+        System.out.println(OPTIONS_LIST_MESSAGE);
 
         while (true) {
             char option = scanner.next().charAt(0);
@@ -49,6 +39,7 @@ public class BankTeller {
                 System.out.println(INVALID_OPTION_MESSAGE);
             }
             System.out.println(PROMPT_MESSAGE);
+            System.out.println(OPTIONS_LIST_MESSAGE);
         }
     }
 }

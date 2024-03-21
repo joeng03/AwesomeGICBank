@@ -23,6 +23,8 @@ public class BankAccount {
      * Constructor to initialize a bank account with zero balance.
      */
     public BankAccount() {
+        assert balance == 0.0 : "Balance should be zero before initializing BankAccount.";
+
         balance = 0.0;
         transactions = new ArrayList<>();
 

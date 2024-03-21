@@ -4,17 +4,16 @@ import java.util.Scanner;
 
 import accounts.BankAccount;
 import exceptions.BankAccountOperationException;
-import exceptions.DepositAmountNonPositiveException;
 
 /**
- * Concrete implementation of BankAccountOperation interface for deposit action.
+ * Concrete implementation of BankAccountOperation interface for deposit operation.
  */
 public class DepositOperation implements BankAccountOperation {
     public static final String DEPOSIT_MESSAGE = "Please enter the amount to deposit:";
 
     public static final String THANK_YOU_DEPOSIT = "Thank you. $%.2f has been deposited to your account.\n";
-    private Scanner scanner;
-    private BankAccount account;
+    private Scanner scanner = null;
+    private BankAccount account = null;
 
     public DepositOperation(Scanner scanner, BankAccount account) {
         this.scanner = scanner;

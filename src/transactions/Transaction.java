@@ -8,9 +8,13 @@ import java.text.SimpleDateFormat;
  * Transaction class represents a single transaction.
  */
 public class Transaction {
-    private Date date;
-    private double amount;
-    private double balance;
+
+    public static final String DATE_FORMAT = "dd MMM yyyy hh:mm:ss a";
+
+    public static final String ROW_FORMAT = "%-23s | $%-12.2f | $%.2f";
+    private Date date = null;
+    private double amount = 0.0;
+    private double balance = 0.0;
 
     /**
      * Constructor to initialize a transaction with the current date, amount, and balance.
@@ -28,7 +32,7 @@ public class Transaction {
      * @return The formatted transaction date.
      */
     public String getDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy hh:mm:ss a");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         return sdf.format(date);
     }
 
@@ -50,7 +54,7 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return String.format("%-23s | $%-12.2f | $%.2f", this.getDate(), this.getAmount(), this.getBalance());
+        return String.format(ROW_FORMAT, this.getDate(), this.getAmount(), this.getBalance());
     }
 }
 
