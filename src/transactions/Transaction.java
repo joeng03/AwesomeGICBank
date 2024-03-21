@@ -2,7 +2,6 @@ package transactions;
 
 import java.util.Date;
 
-import java.util.Date;
 import java.text.SimpleDateFormat;
 
 /**
@@ -51,7 +50,7 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return String.format("%s\t| %.2f\t| %.2f\t", this.getDate(), this.getAmount(), this.getBalance());
+        return String.format("%-23s | $%-12.2f | $%.2f", this.getDate(), this.getAmount(), this.getBalance());
     }
 }
 

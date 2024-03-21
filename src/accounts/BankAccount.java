@@ -12,6 +12,10 @@ import transactions.Transaction;
  * accounts.BankAccount class represents a single bank account.
  */
 public class BankAccount {
+
+    public static final String TRANSACTIONS_TABLE_HEADER = String.format("%-23s | %-12s | %s", "Date", "Amount",
+            "Balance");
+
     private double balance = 0.0;
     private ArrayList<Transaction> transactions = null;
 
@@ -69,7 +73,7 @@ public class BankAccount {
     public void printStatement() {
         assert balance >= 0.0 : "Balance should be non-negative before printing bank statement.";
 
-        System.out.println("Date\t\t\t\t\t| Amount\t| Balance");
+        System.out.println(TRANSACTIONS_TABLE_HEADER);
         for (Transaction transaction : transactions) {
             System.out.println(transaction);
         }
