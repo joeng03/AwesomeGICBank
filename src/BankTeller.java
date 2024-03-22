@@ -46,15 +46,17 @@ public class BankTeller {
         while (true) {
             char option = scanner.next().charAt(0);
             BankAccountOperation operation = operationFactory.createOperation(option, scanner, account);
-            if (operation != null) {
-                try {
-                    operation.execute();
-                } catch (BankAccountOperationException e) {
-                    System.out.println(e.getMessage());
-                }
-            } else {
+            if (operation == null) {
                 System.out.println(INVALID_OPTION_MESSAGE);
+                continue;
             }
+
+            try {
+                operation.execute();
+            } catch (BankAccountOperationException e) {
+                System.out.println(e.getMessage());
+            }
+
         }
     }
 }
