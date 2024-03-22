@@ -14,9 +14,15 @@
 | 8 | Customer | be able to quit the banking application when I am done with my transactions | exit the program gracefully |
 | 9 | Customer | receive a farewell message when I quit the banking application | feel appreciated as a customer of AwesomeGIC Bank |
 
-## Overview of the Codebase
+## Getting Started
 
-### Directory Structure
+### How to run the project
+
+Prerequisite: Have **Java** correctly installed on your machine, and added to **PATH**.
+
+Identify the **AwesomeGICBank.jar** file located in the root directory. `cd` into the root directory. Then, run the command:
+
+### Directory Structure (src/)
 
 ```bash
 │   BankTeller.java
@@ -50,6 +56,8 @@
         TransactionHistoryManager.java
         WithdrawTransaction.java
 ```
+
+## Overview of the codebase
 
 ### **Transaction classes**
 
