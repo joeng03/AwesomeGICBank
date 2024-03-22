@@ -39,6 +39,8 @@
 ├───exceptions
 │       BankAccountOperationException.java
 │       DepositAmountNonPositiveException.java
+│       NegativeBalanceTransactionException.java
+│       TransactionException.java
 │       WithdrawAmountExceedDepositException.java
 │       WithdrawAmountNonPositiveException.java
 │
@@ -47,42 +49,41 @@
         Transaction.java
         TransactionHistoryManager.java
         WithdrawTransaction.java
-
 ```
 
 ### **Transaction classes**
 
-![Untitled](images/transactions.png)
+![transactions.png](images/transactions.png)
 
 The abstract class `Transaction` keeps track of the details of a single transaction, such as date, amount, and balance. There are 2 types of **Transaction**s, which are `WithdrawTransaction` and `DepositTransaction`. `TransactionHistoryManager` keeps track of the transaction history, ordered by transaction date, using an `ArrayList`.
 
 ### BankAccountOperation classes
 
-![Untitled](images/bank_account_operations.png)
+![bank_account_operations.png](images/bank_account_operations.png)
 
-The 4 main operations, **Deposit**, **Withdraw**, **PrintStatement,** and **Quit**, all implement the **execute()** method from the `BankAccountOperation` interface. `BankAccountOperationFactory` is a factory class that creates operations of type **`**BankAccountOperation` for the bank account. It applies the **Factory Method** and **Command** design patterns.
+The 4 main operations, **Deposit**, **Withdraw**, **PrintStatement,** and **Quit**, all implement the **execute()** method from the `BankAccountOperation` interface. `BankAccountOperationFactory` is a factory class that creates operations of type **`**BankAccountOperation` for the bank account. It applies the **Command** and **Factory Method** design patterns.
 
 ### the BankAccount class
 
-![Untitled](images/bank_accounts.png)
+![bank_accounts.png](images/bank_accounts.png)
 
 The `BankAccount` class implements the logic to support the main functionalities of a bank account, through the `deposit()`, `withdraw()`**,** and `getStatement()` methods. It keeps track of the current balance of the bank account and a historical list of **Transaction**s, using the `TransactionManager`.
 
 ### the BankTeller class
 
-![Untitled](images/BankTeller.png)
+![BankTeller.png](images/BankTeller.png)
 
 The `BankTeller` class plays the role of a bank teller in a real-world scenario, handling user requests and bank responses through I/O operations. It is the sole entry point to interact with a bank account.
 
 ### Exception classes
 
-![Untitled](images/exceptions.png)
+![exceptions.png](images/exceptions.png)
 
-The exceptions focus on handling scenarios where the user input will result in an invalid state for the bank account, for example, depositing or withdrawing a non-positive amount of money, or withdrawing more than the existing deposit (we do not support loans yet!). These exceptions extend the abstract class **BankAccountOperationException,** which itself extends the **Exception** class.
+The exceptions focus on responding to scenarios where the user input will result in an invalid state for the bank account, for example, depositing or withdrawing a non-positive amount of money, or withdrawing more than the existing deposit (we do not support loans yet!). These exceptions extend the abstract class `BankAccountOperationException`**,** which itself extends the **Exception** class. The `NegativeBalanceTransactionException` is used to respond to the case of negative balance supplied during the instantiation of a `Transaction` class.
 
 ### UML Diagram (Overview)
 
-![output.png](images/overview.png)
+![overview.png](images/overview.png)
 
 ## **Object-oriented Design Principles**
 
@@ -92,7 +93,7 @@ In this application, each class only has one responsibility and one reason to ch
 
 ### **Open-closed Principle**
 
-Classes in this application are designed such that they are open for extension but closed for modification. For example, the `Transaction` abstract class could be extended to model different types of bank account transactions, like `PaymentTransaction` and `InterestTransaction`. The `BankAccount` class could be extended to model different type of bank bank_accounts, like`FixedDepositBankAccount`, `SavingsBankAccount`, and `SalaryBankAccount`. This allows for flexibility and reduces the risk of introducing bugs when extending the system's functionality.
+Classes in this application are designed such that they are open for extension but closed for modification. For example, the `Transaction` abstract class could be extended to model different types of bank account transactions, like `PaymentTransaction` and `InterestTransaction`. The `BankAccount` class could be extended to model different type of bank accounts, like`FixedDepositBankAccount`, `SavingsBankAccount`, and `SalaryBankAccount`. This allows for flexibility and reduces the risk of introducing bugs when extending the system's functionality.
 
 ### Liskov Substitution
 
@@ -115,9 +116,9 @@ For example, the `BankTeller` constructor takes in `Scanner`, `BankAccount`, and
 
 ## Representation Invariants and Assertions
 
-![Untitled](images/invariants_and_assertions.png)
+![invariants_and_assertions.png](images/invariants_and_assertions.png)
 
-The representation invariant for the bank account is that balances must be non-negative at all times. This condition is asserted at the beginning and end of every mutating function (`deposit()` and `withdraw()`), at the beginning of every non-mutating function (`getStatement()`), and at the end of the constructor (`BankAccount()`). Through the extensive use of assertions, we greatly reduce the possibility of introducing bugs that violate the representation invariants during the development process.
+The representation invariant for the bank account is that balances must be non-negative at all times. This condition is asserted at the beginning and the end of every mutating function (`deposit()` and `withdraw()`), at the beginning of every non-mutating function (`getStatement()`), and at the end of the constructor (`BankAccount()`). Through the extensive use of assertions, we greatly reduce the possibility of introducing changes that violate the representation invariants (bugs) during the development process.
 
 ## Performance
 
@@ -135,17 +136,17 @@ As a banking system which prioritises consistency over availability, an **SQL** 
 
 ### Supporting Different Types of Bank Accounts
 
-To accommodate various types of bank bank_accounts like `FixedDepositBankAccount`, `SavingsBankAccount`, and `SalaryBankAccount`, it's essential to abstract common attributes and methods from the current BankAccount class into an abstract class or multiple interfaces. This abstraction allows all bank account types to extend the behavior of the base class or implement the required interfaces, ensuring consistency across different account types while enabling specific functionalities unique to each account type.
+To accommodate various types of bank accounts like `FixedDepositBankAccount`, `SavingsBankAccount`, and `SalaryBankAccount`, it's essential to abstract common attributes and methods from the current BankAccount class into an abstract class or multiple interfaces. This abstraction allows all bank account types to extend the behavior of the base class or implement the required interfaces, ensuring consistency across different account types while enabling specific functionalities unique to each account type.
 
 ### Testing the Application
 
 Unit testing and integration testing are essential components of ensuring the reliability and correctness of the banking application.
 
-### Unit Test Plan
+### Unit Test Plan:
 
 ### BankAccount.java
 
-### Test Cases:
+**Test Cases:**
 
 - Test depositing a positive amount updates the balance correctly.
 - Test depositing a non-positive amount throws `DepositAmountNonPositiveException`.
@@ -156,74 +157,67 @@ Unit testing and integration testing are essential components of ensuring the re
 
 ### BankAccountOperationFactory.java
 
-### Test Cases:
+**Test Cases:**
 
 - Test creating `DepositOperation`returns the correct instance.
-- Test creating `WithdrawOperation` eturns the correct instance.
-- Test creating `PrintStatementOperation`returns the correct instance.
+- Test creating `WithdrawOperation` returns the correct instance.
+- Test creating `PrintStatementOperation` returns the correct instance.
 - Test creating `QuitOperation` returns the correct instance.
 - Test creating with an invalid character returns null.
 
 ### DepositOperation.java
 
-### Test Cases:
+**Test Cases:**
 
 - Test executing deposit operation updates the balance correctly.
 
 ### WithdrawOperation.java
 
-### Test Cases:
+**Test Cases:**
 
 - Test executing withdraw operation updates the balance correctly.
 
 ### PrintStatementOperation.java
 
-### Test Cases:
+**Test Cases:**
 
 - Test executing print statement operation generates the correct output.
 
 ### QuitOperation.java
 
-### Test Cases:
+**Test Cases:**
 
 - Test executing quit operation exits the application.
 
 ### BankAccountOperationException.java
 
-### Test Cases:
+**Test Cases:**
 
-- Test throwing `BankAccountOperationException`with a custom message.
+- Test throwing `BankAccountOperationException`with the correct error message.
 
 ### DepositAmountNonPositiveException.java
 
-### Test Cases:
+**Test Cases:**
 
-- Test throwing `DepositAmountNonPositiveException` with a custom message.
+- Test throwing `DepositAmountNonPositiveException` with the correct error message.
 
 ### WithdrawAmountExceedDepositException.java
 
-### Test Cases:
+**Test Cases:**
 
-- Test throwing `WithdrawAmountExceedDepositException` with a custom message.
+- Test throwing `WithdrawAmountExceedDepositException` with the correct error message.
 
 ### WithdrawAmountNonPositiveException.java
 
-### Test Cases:
+**Test Cases:**
 
-- Test throwing `WithdrawAmountNonPositiveException` with a custom message.
+- Test throwing `WithdrawAmountNonPositiveException` with the correct error message.
 
 ### DepositTransaction.java
 
-### Test Cases:
+**Test Cases:**
 
 - Test creating deposit transaction with the correct details.
-
-### TransactionHistoryManager.java
-
-### Test Cases:
-
-- Test adding a transaction to the transaction history.
-- Test retrieving transaction history for a specific account.
 
 ### WithdrawTransaction.java
 
@@ -231,15 +225,22 @@ Unit testing and integration testing are essential components of ensuring the re
 
 - Test creating withdraw transaction with the correct details.
 
+### TransactionHistoryManager.java
+
+**Test Cases:**
+
+- Test adding a transaction to the transaction history.
+- Test retrieving transaction history for a specific account.
+
 ### BankTeller.java
 
-### Test Cases:
+**Test Cases:**
 
 - Test BankTeller start method initiates the banking application correctly.
 
 ### Main.java
 
-### Test Cases:
+**Test Cases:**
 
 - Test Main class executes without errors.
 
@@ -257,7 +258,7 @@ Unit testing and integration testing are essential components of ensuring the re
 
 By following this unit test plan, you can ensure comprehensive test coverage and validate the functionality of each component in the banking system.
 
-### Integration Test Plan
+### Integration Test Plan:
 
 Integration tests should simulate the entire user interaction flow from start to finish, including:
 
