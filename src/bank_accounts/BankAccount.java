@@ -2,9 +2,11 @@ package bank_accounts;
 
 import exceptions.BankAccountOperationException;
 import exceptions.DepositAmountNonPositiveException;
+import exceptions.TransactionException;
 import exceptions.WithdrawAmountExceedDepositException;
 import exceptions.WithdrawAmountNonPositiveException;
 import transactions.DepositTransaction;
+import transactions.Transaction;
 import transactions.TransactionHistoryManager;
 import transactions.WithdrawTransaction;
 
@@ -12,10 +14,6 @@ import transactions.WithdrawTransaction;
  * accounts.BankAccount class represents a single bank account.
  */
 public class BankAccount implements DepositService, WithdrawService, PrintStatementService {
-
-    public static final String TRANSACTIONS_TABLE_HEADER = String.format("%-23s | %-12s | %s", "Date", "Amount",
-            "Balance");
-
     private double balance = 0.0;
     private TransactionHistoryManager transactionHistoryManager = null;
 
@@ -53,7 +51,12 @@ public class BankAccount implements DepositService, WithdrawService, PrintStatem
         }
 
         balance += amount;
-        transactionHistoryManager.add(new DepositTransaction(amount, balance));
+        try {
+            Transaction depositTransaction = new DepositTransaction(amount, balance);
+            transactionHistoryManager.add(depositTransaction);
+        } catch(TransactionException e) {
+            System.out.println(e.getMessage());
+        }
 
         assert balance >= 0.0 : "Balance should be non-negative after depositing.";
     }
@@ -75,7 +78,13 @@ public class BankAccount implements DepositService, WithdrawService, PrintStatem
         }
 
         balance -= amount;
-        transactionHistoryManager.add(new WithdrawTransaction(amount, balance));
+
+        try {
+            Transaction withdrawTransaction = new WithdrawTransaction(amount, balance);
+            transactionHistoryManager.add(withdrawTransaction);
+        } catch(TransactionException e) {
+            System.out.println(e.getMessage());
+        }
 
         assert balance >= 0.0 : "Balance should be non-negative after withdrawing.";
     }

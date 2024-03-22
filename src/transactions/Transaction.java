@@ -4,6 +4,9 @@ import java.util.Date;
 
 import java.text.SimpleDateFormat;
 
+import exceptions.NegativeBalanceTransactionException;
+import exceptions.TransactionException;
+
 /**
  * Transaction class represents a single transaction.
  */
@@ -20,7 +23,10 @@ public abstract class Transaction {
      * @param amount The amount of the transaction.
      * @param balance The balance after the transaction.
      */
-    public Transaction(double amount, double balance) {
+    public Transaction(double amount, double balance) throws TransactionException {
+        if(balance < 0.0) {
+            throw new NegativeBalanceTransactionException();
+        }
 
         this.date = new Date();
         this.amount = amount;

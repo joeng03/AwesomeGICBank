@@ -20,9 +20,9 @@ public class TransactionHistoryManager {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(TRANSACTIONS_HISTORY_TABLE_HEADER + "\n");
+        sb.append(TRANSACTIONS_HISTORY_TABLE_HEADER);
         for (Transaction transaction : transactions) {
-            sb.append(transaction + "\n");
+            sb.append("\n" + transaction);
         }
 
         return sb.toString();
