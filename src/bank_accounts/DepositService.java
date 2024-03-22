@@ -1,4 +1,4 @@
-package accounts;
+package bank_accounts;
 
 import exceptions.BankAccountOperationException;
 

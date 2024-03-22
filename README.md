@@ -22,7 +22,7 @@
 │   BankTeller.java
 │   Main.java
 │
-├───accounts
+├───bank_accounts
 │       BankAccount.java
 │       DepositService.java
 │       PrintStatementService.java
@@ -52,37 +52,37 @@
 
 ### **Transaction classes**
 
-![Untitled](images/Untitled.png)
+![Untitled](images/transactions.png)
 
 The abstract class `Transaction` keeps track of the details of a single transaction, such as date, amount, and balance. There are 2 types of **Transaction**s, which are `WithdrawTransaction` and `DepositTransaction`. `TransactionHistoryManager` keeps track of the transaction history, ordered by transaction date, using an `ArrayList`.
 
 ### BankAccountOperation classes
 
-![Untitled](images/Untitled 1.png)
+![Untitled](images/bank_account_operations.png)
 
 The 4 main operations, **Deposit**, **Withdraw**, **PrintStatement,** and **Quit**, all implement the **execute()** method from the `BankAccountOperation` interface. `BankAccountOperationFactory` is a factory class that creates operations of type **`**BankAccountOperation` for the bank account. It applies the **Factory Method** and **Command** design patterns.
 
 ### the BankAccount class
 
-![Untitled](images/Untitled 2.png)
+![Untitled](images/bank_accounts.png)
 
 The `BankAccount` class implements the logic to support the main functionalities of a bank account, through the `deposit()`, `withdraw()`**,** and `getStatement()` methods. It keeps track of the current balance of the bank account and a historical list of **Transaction**s, using the `TransactionManager`.
 
 ### the BankTeller class
 
-![Untitled](images/Untitled 3.png)
+![Untitled](images/BankTeller.png)
 
 The `BankTeller` class plays the role of a bank teller in a real-world scenario, handling user requests and bank responses through I/O operations. It is the sole entry point to interact with a bank account.
 
 ### Exception classes
 
-![Untitled](images/Untitled 4.png)
+![Untitled](images/exceptions.png)
 
 The exceptions focus on handling scenarios where the user input will result in an invalid state for the bank account, for example, depositing or withdrawing a non-positive amount of money, or withdrawing more than the existing deposit (we do not support loans yet!). These exceptions extend the abstract class **BankAccountOperationException,** which itself extends the **Exception** class.
 
 ### UML Diagram (Overview)
 
-![output.png](images/output.png)
+![output.png](images/overview.png)
 
 ## **Object-oriented Design Principles**
 
@@ -92,7 +92,7 @@ In this application, each class only has one responsibility and one reason to ch
 
 ### **Open-closed Principle**
 
-Classes in this application are designed such that they are open for extension but closed for modification. For example, the `Transaction` abstract class could be extended to model different types of bank account transactions, like `PaymentTransaction` and `InterestTransaction`. The `BankAccount` class could be extended to model different type of bank accounts, like`FixedDepositBankAccount`, `SavingsBankAccount`, and `SalaryBankAccount`. This allows for flexibility and reduces the risk of introducing bugs when extending the system's functionality.
+Classes in this application are designed such that they are open for extension but closed for modification. For example, the `Transaction` abstract class could be extended to model different types of bank account transactions, like `PaymentTransaction` and `InterestTransaction`. The `BankAccount` class could be extended to model different type of bank bank_accounts, like`FixedDepositBankAccount`, `SavingsBankAccount`, and `SalaryBankAccount`. This allows for flexibility and reduces the risk of introducing bugs when extending the system's functionality.
 
 ### Liskov Substitution
 
@@ -115,7 +115,7 @@ For example, the `BankTeller` constructor takes in `Scanner`, `BankAccount`, and
 
 ## Representation Invariants and Assertions
 
-![Untitled](images/Untitled 5.png)
+![Untitled](images/invariants_and_assertions.png)
 
 The representation invariant for the bank account is that balances must be non-negative at all times. This condition is asserted at the beginning and end of every mutating function (`deposit()` and `withdraw()`), at the beginning of every non-mutating function (`getStatement()`), and at the end of the constructor (`BankAccount()`). Through the extensive use of assertions, we greatly reduce the possibility of introducing bugs that violate the representation invariants during the development process.
 
@@ -135,7 +135,7 @@ As a banking system which prioritises consistency over availability, an **SQL** 
 
 ### Supporting Different Types of Bank Accounts
 
-To accommodate various types of bank accounts like `FixedDepositBankAccount`, `SavingsBankAccount`, and `SalaryBankAccount`, it's essential to abstract common attributes and methods from the current BankAccount class into an abstract class or multiple interfaces. This abstraction allows all bank account types to extend the behavior of the base class or implement the required interfaces, ensuring consistency across different account types while enabling specific functionalities unique to each account type.
+To accommodate various types of bank bank_accounts like `FixedDepositBankAccount`, `SavingsBankAccount`, and `SalaryBankAccount`, it's essential to abstract common attributes and methods from the current BankAccount class into an abstract class or multiple interfaces. This abstraction allows all bank account types to extend the behavior of the base class or implement the required interfaces, ensuring consistency across different account types while enabling specific functionalities unique to each account type.
 
 ### Testing the Application
 

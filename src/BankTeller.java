@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-import accounts.BankAccount;
+import bank_accounts.BankAccount;
 import bank_account_operations.BankAccountOperationFactory;
 import bank_account_operations.BankAccountOperation;
 import exceptions.BankAccountOperationException;

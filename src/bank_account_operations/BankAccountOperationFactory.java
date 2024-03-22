@@ -2,7 +2,7 @@ package bank_account_operations;
 
 import java.util.Scanner;
 
-import accounts.BankAccount;
+import bank_accounts.BankAccount;
 
 /**
  * Factory class for creating bank account operations.

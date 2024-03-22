@@ -1,6 +1,6 @@
 package bank_account_operations;
 
-import accounts.BankAccount;
+import bank_accounts.BankAccount;
 
 /**
  * Concrete implementation of BankAccountOperation interface for print statement operation.
