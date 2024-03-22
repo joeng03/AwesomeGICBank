@@ -22,6 +22,8 @@ Prerequisite: Have **Java** correctly installed on your machine, and added to **
 
 Identify the **AwesomeGICBank.jar** file located in the root directory. `cd` into the root directory. Then, run the command:
 
+```java -jar AwesomeGICBank.jar```
+
 ### Directory Structure (src/)
 
 ```bash
