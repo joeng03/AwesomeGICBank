@@ -1,13 +1,11 @@
 package accounts;
 
-import java.util.ArrayList;
-
 import exceptions.BankAccountOperationException;
 import exceptions.DepositAmountNonPositiveException;
 import exceptions.WithdrawAmountExceedDepositException;
 import exceptions.WithdrawAmountNonPositiveException;
 import transactions.DepositTransaction;
-import transactions.Transaction;
+import transactions.TransactionHistoryManager;
 import transactions.WithdrawTransaction;
 
 /**
@@ -19,18 +17,27 @@ public class BankAccount implements DepositService, WithdrawService, PrintStatem
             "Balance");
 
     private double balance = 0.0;
-    private ArrayList<Transaction> transactions = null;
+    private TransactionHistoryManager transactionHistoryManager = null;
 
     /**
      * Constructor to initialize a bank account with zero balance.
+     * Uses the default transaction history manager.
      */
     public BankAccount() {
-        assert balance == 0.0 : "Balance should be zero before initializing BankAccount.";
+        this(new TransactionHistoryManager());
 
-        balance = 0.0;
-        transactions = new ArrayList<>();
+        assert balance == 0.0 : "Balance should be zero after initializing BankAccount.";
+    }
 
-        assert balance >= 0.0 : "Balance should be non-negative after initializing BankAccount.";
+    /**
+     * Constructor to initialize a bank account with zero balance and a transaction history manager.
+     * @param transactionHistoryManager The transaction history manager to be used.
+     */
+    public BankAccount(TransactionHistoryManager transactionHistoryManager) {
+        this.balance = 0.0;
+        this.transactionHistoryManager = transactionHistoryManager;
+
+        assert balance == 0.0 : "Balance should be zero after initializing BankAccount.";
     }
 
     /**
@@ -46,7 +53,7 @@ public class BankAccount implements DepositService, WithdrawService, PrintStatem
         }
 
         balance += amount;
-        transactions.add(new DepositTransaction(amount, balance));
+        transactionHistoryManager.add(new DepositTransaction(amount, balance));
 
         assert balance >= 0.0 : "Balance should be non-negative after depositing.";
     }
@@ -68,7 +75,7 @@ public class BankAccount implements DepositService, WithdrawService, PrintStatem
         }
 
         balance -= amount;
-        transactions.add(new WithdrawTransaction(amount, balance));
+        transactionHistoryManager.add(new WithdrawTransaction(amount, balance));
 
         assert balance >= 0.0 : "Balance should be non-negative after withdrawing.";
     }
@@ -83,12 +90,6 @@ public class BankAccount implements DepositService, WithdrawService, PrintStatem
     public String getStatement() {
         assert balance >= 0.0 : "Balance should be non-negative before printing account statement.";
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(TRANSACTIONS_TABLE_HEADER + "\n");
-        for (Transaction transaction : transactions) {
-            sb.append(transaction + "\n");
-        }
-
-        return sb.toString();
+        return transactionHistoryManager.toString();
     }
 }

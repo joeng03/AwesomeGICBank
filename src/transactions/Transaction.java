@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 public abstract class Transaction {
 
     public static final String DATE_FORMAT = "dd MMM yyyy hh:mm:ss a";
-
     public static final String ROW_FORMAT = "%-23s | %-12.2f | %.2f";
     private Date date = null;
     private double amount = 0.0;

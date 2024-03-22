@@ -20,6 +20,20 @@ public class BankTeller {
     private BankAccount account = null;
     private BankAccountOperationFactory operationFactory = null;
 
+    /**
+     * Constructor to initialize a bank teller with a scanner, bank account, and operation factory.
+     * Uses the default scanner, bank account, and operation factory.
+     */
+    public BankTeller() {
+        this(new Scanner(System.in), new BankAccount(), new BankAccountOperationFactory());
+    }
+
+    /**
+     * Constructor to initialize a bank teller with a scanner, bank account, and operation factory.
+     * @param scanner The scanner to be used for input.
+     * @param account The bank account to be used.
+     * @param operationFactory The operation factory to be used.
+     */
     public BankTeller(Scanner scanner, BankAccount account, BankAccountOperationFactory operationFactory) {
         this.scanner = scanner;
         this.account = account;
