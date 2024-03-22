@@ -52,37 +52,37 @@
 
 ### **Transaction classes**
 
-![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled.png)
+![Untitled](images/Untitled.png)
 
 The abstract class `Transaction` keeps track of the details of a single transaction, such as date, amount, and balance. There are 2 types of **Transaction**s, which are `WithdrawTransaction` and `DepositTransaction`. `TransactionHistoryManager` keeps track of the transaction history, ordered by transaction date, using an `ArrayList`.
 
 ### BankAccountOperation classes
 
-![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 1.png)
+![Untitled](images/Untitled 1.png)
 
 The 4 main operations, **Deposit**, **Withdraw**, **PrintStatement,** and **Quit**, all implement the **execute()** method from the `BankAccountOperation` interface. `BankAccountOperationFactory` is a factory class that creates operations of type **`**BankAccountOperation` for the bank account. It applies the **Factory Method** and **Command** design patterns.
 
 ### the BankAccount class
 
-![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 2.png)
+![Untitled](images/Untitled 2.png)
 
 The `BankAccount` class implements the logic to support the main functionalities of a bank account, through the `deposit()`, `withdraw()`**,** and `getStatement()` methods. It keeps track of the current balance of the bank account and a historical list of **Transaction**s, using the `TransactionManager`.
 
 ### the BankTeller class
 
-![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 3.png)
+![Untitled](images/Untitled 3.png)
 
 The `BankTeller` class plays the role of a bank teller in a real-world scenario, handling user requests and bank responses through I/O operations. It is the sole entry point to interact with a bank account.
 
 ### Exception classes
 
-![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 4.png)
+![Untitled](images/Untitled 4.png)
 
 The exceptions focus on handling scenarios where the user input will result in an invalid state for the bank account, for example, depositing or withdrawing a non-positive amount of money, or withdrawing more than the existing deposit (we do not support loans yet!). These exceptions extend the abstract class **BankAccountOperationException,** which itself extends the **Exception** class.
 
 ### UML Diagram (Overview)
 
-![output.png](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/output.png)
+![output.png](images/output.png)
 
 ## **Object-oriented Design Principles**
 
@@ -115,7 +115,7 @@ For example, the `BankTeller` constructor takes in `Scanner`, `BankAccount`, and
 
 ## Representation Invariants and Assertions
 
-![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 5.png)
+![Untitled](images/Untitled 5.png)
 
 The representation invariant for the bank account is that balances must be non-negative at all times. This condition is asserted at the beginning and end of every mutating function (`deposit()` and `withdraw()`), at the beginning of every non-mutating function (`getStatement()`), and at the end of the constructor (`BankAccount()`). Through the extensive use of assertions, we greatly reduce the possibility of introducing bugs that violate the representation invariants during the development process.
 
