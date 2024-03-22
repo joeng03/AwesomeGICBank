@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="AwesomeGICBank:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/AwesomeGICBank_jar</output-path>
+    <root id="archive" name="AwesomeGICBank.jar">
+      <element id="module-output" name="AwesomeGICBank" />
+    </root>
+  </artifact>
+</component>
