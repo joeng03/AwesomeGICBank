@@ -1,4 +1,4 @@
-# 🏦 AwesomeGIC Bank: Documentation
+# AwesomeGIC Bank: Documentation
 
 ## User stories
 
@@ -18,7 +18,7 @@
 
 ### Directory Structure
 
-```c
+```bash
 │   BankTeller.java
 │   Main.java
 │
@@ -45,34 +45,36 @@
 └───transactions
         DepositTransaction.java
         Transaction.java
+        TransactionHistoryManager.java
         WithdrawTransaction.java
+
 ```
 
-### **Transaction**s
+### **Transaction classes**
 
 ![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled.png)
 
-A class that keeps track of the details of a single transaction, such as date, amount, and balance. There are 2 types of **Transaction**s, which are `WithdrawTransaction` and `DepositTransaction`.
+The abstract class `Transaction` keeps track of the details of a single transaction, such as date, amount, and balance. There are 2 types of **Transaction**s, which are `WithdrawTransaction` and `DepositTransaction`. `TransactionHistoryManager` keeps track of the transaction history, ordered by transaction date, using an `ArrayList`.
 
-### Bank Account Operations
+### BankAccountOperation classes
 
 ![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 1.png)
 
-The 4 main operations, **Deposit**, **Withdraw**, **PrintStatement,** and **Quit**, all implement the **execute()** method from the **BankAccountOperation** interface. **BankAccountOperationFactory** is a factory class that creates operations of type **BankAccountOperation** for the bank account. It applies the Factory Method design pattern.
+The 4 main operations, **Deposit**, **Withdraw**, **PrintStatement,** and **Quit**, all implement the **execute()** method from the `BankAccountOperation` interface. `BankAccountOperationFactory` is a factory class that creates operations of type **`**BankAccountOperation` for the bank account. It applies the **Factory Method** and **Command** design patterns.
 
 ### the BankAccount class
 
 ![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 2.png)
 
-The **BankAccount** class implements the logic to support the main functionalities of a bank account, through the **deposit()**, **withdraw(),** and **getStatement()** methods. It keeps track of the current balance of the bank account and a historical list of **Transaction**s, ordered by transaction date.
+The `BankAccount` class implements the logic to support the main functionalities of a bank account, through the `deposit()`, `withdraw()`**,** and `getStatement()` methods. It keeps track of the current balance of the bank account and a historical list of **Transaction**s, using the `TransactionManager`.
 
 ### the BankTeller class
 
 ![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 3.png)
 
-The BankTeller class plays the role of a bank teller in a real-world scenario, handling user requests and bank responses through I/O operations. It is the sole entry point to interact with a bank account.
+The `BankTeller` class plays the role of a bank teller in a real-world scenario, handling user requests and bank responses through I/O operations. It is the sole entry point to interact with a bank account.
 
-### Exceptions
+### Exception classes
 
 ![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 4.png)
 
@@ -82,15 +84,15 @@ The exceptions focus on handling scenarios where the user input will result in a
 
 ![output.png](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/output.png)
 
-## **Software Engineering Principles**
+## **Object-oriented Design Principles**
 
 ### Single Responsibility
 
-In this application, each class only has one responsibility and one reason to change. For example, the `BankAccount` class fully handles the logic of a bank account, the `BankTeller` class handles all user requests, the `Transaction` classes are responsible for storing individual transaction data, and the `Operation`classes each handle their respective scenario.
+In this application, each class only has one responsibility and one reason to change. For example, the `BankAccount` class fully handles the logic of a bank account, the `BankTeller` class handles all user requests, the `Transaction` classes are responsible for storing individual transaction data, the `TransactionHistoryManager` keeps track of the historical list of **Transaction**s, and the `Operation`classes each handle their respective scenario.
 
 ### **Open-closed Principle**
 
-Classes in this application are designed such that they are open for extension but closed for modification. For example, the `Transaction` class could be extended to model different types of bank account transactions, like `PaymentTransaction` and `InterestTransaction`. The `BankAccount` class could be extended to model different type of bank accounts, like`FixedDepositBankAccount`, `SavingsBankAccount`, and `SalaryBankAccount`. This allows for flexibility and reduces the risk of introducing bugs when extending the system's functionality.
+Classes in this application are designed such that they are open for extension but closed for modification. For example, the `Transaction` abstract class could be extended to model different types of bank account transactions, like `PaymentTransaction` and `InterestTransaction`. The `BankAccount` class could be extended to model different type of bank accounts, like`FixedDepositBankAccount`, `SavingsBankAccount`, and `SalaryBankAccount`. This allows for flexibility and reduces the risk of introducing bugs when extending the system's functionality.
 
 ### Liskov Substitution
 
@@ -106,10 +108,10 @@ For example, the `BankTeller` constructor takes in `Scanner`, `BankAccount`, and
 
 ## Code Quality
 
-- Application of Single Level of Abstraction Principle (SLAP).
+- Application of Single Level of Abstraction Principle (**SLAP**).
 - Use of guard clauses to keep the happy path prominent.
 - No magic numbers and string literals, abstracted them out as constants instead.
-- Widespread coverage and correct format of Javadoc.
+- Widespread coverage and correct format of **Javadoc**.
 
 ## Representation Invariants and Assertions
 
@@ -119,13 +121,17 @@ The representation invariant for the bank account is that balances must be non-n
 
 ## Performance
 
-As opposed to using naive String concatenation, which results in a time complexity of **O(N²)** due to the immutability of `String` in Java, where **N** is the length of the final String, `StringBuilder` was used in`getStatement()` to provide **O(N)** time complexity when building the transaction table.
+As opposed to using naive String concatenation, which results in a time complexity of **O(N²)** due to the immutability of `String` in Java, where **N** is the length of the final String, `StringBuilder` was used in the `toString()` method of `TransactionHistoryManager` to provide **O(N)** time complexity when building the transaction table.
 
 ## Possible Future Enhancements
 
-### Supporting Concurrency
+### Concurrency
 
 Concurrent access from multiple clients is a critical scenario in a banking system. In a multi-client, concurrent environment, each client could be represented by a thread in the `BankTeller` thread pool. To achieve this, methods like `deposit()`, `withdraw()`, and `getStatement()` in the `BankAccount` class should be explicitly synchronized using the `synchronized` keyword. Outside synchronized blocks, shared data structures such as `ArrayList`, used to store transaction history, must be synchronized using the Java `Collections` library to avoid thread safety issues. By synchronizing access to these resources, we can safeguard against race conditions, thus maintaining the integrity of bank account data.
+
+### Database Integration
+
+As a banking system which prioritises consistency over availability, an **SQL** database, which adheres to the **ACID** model, may be preferred over a **NoSQL** database. The database tables that may be needed are `Customer`, `BankAccount`, `Transaction`, and `AuditLog`. We could use **JDBC** (Java Database Connectivity) to interact with the database. **ORM** frameworks such as **Hibernate** or **JPA** could be used to map Java objects to the database tables.
 
 ### Supporting Different Types of Bank Accounts
 
@@ -135,22 +141,123 @@ To accommodate various types of bank accounts like `FixedDepositBankAccount`, `S
 
 Unit testing and integration testing are essential components of ensuring the reliability and correctness of the banking application.
 
-### Unit Testing
+### Unit Test Plan
 
-1. **Deposit Functionality**: Unit tests should verify that the deposit functionality works as expected. This includes:
-    - Testing depositing various amounts of money.
-    - Checking that the balance is updated correctly after each deposit.
-    - Ensuring that appropriate error handling is in place for invalid inputs.
-2. **Withdrawal Functionality**: Unit tests should cover all aspects of the withdrawal functionality, such as:
-    - Testing withdrawals of different amounts.
-    - Verifying that the balance is updated correctly after each withdrawal.
-    - Checking for insufficient funds scenarios and appropriate error handling.
-3. **Print Statement Functionality**: Unit tests should validate the print statement functionality by:
-    - Verifying that the printed statement contains the correct transaction details.
-    - Ensuring that the statement includes the appropriate header and formatting.
-4. **Quit Functionality**: Although straightforward, unit tests should confirm that the application exits gracefully when the user chooses to quit.
+### BankAccount.java
 
-### Integration Testing
+### Test Cases:
+
+- Test depositing a positive amount updates the balance correctly.
+- Test depositing a non-positive amount throws `DepositAmountNonPositiveException`.
+- Test withdrawing a valid amount updates the balance correctly.
+- Test withdrawing a non-positive amount throws `WithdrawAmountNonPositiveException`.
+- Test withdrawing an amount exceeding the balance throws `WithdrawAmountExceedDepositException`.
+- Test printing the account statement generates the correct output.
+
+### BankAccountOperationFactory.java
+
+### Test Cases:
+
+- Test creating `DepositOperation`returns the correct instance.
+- Test creating `WithdrawOperation` eturns the correct instance.
+- Test creating `PrintStatementOperation`returns the correct instance.
+- Test creating `QuitOperation` returns the correct instance.
+- Test creating with an invalid character returns null.
+
+### DepositOperation.java
+
+### Test Cases:
+
+- Test executing deposit operation updates the balance correctly.
+
+### WithdrawOperation.java
+
+### Test Cases:
+
+- Test executing withdraw operation updates the balance correctly.
+
+### PrintStatementOperation.java
+
+### Test Cases:
+
+- Test executing print statement operation generates the correct output.
+
+### QuitOperation.java
+
+### Test Cases:
+
+- Test executing quit operation exits the application.
+
+### BankAccountOperationException.java
+
+### Test Cases:
+
+- Test throwing `BankAccountOperationException`with a custom message.
+
+### DepositAmountNonPositiveException.java
+
+### Test Cases:
+
+- Test throwing `DepositAmountNonPositiveException` with a custom message.
+
+### WithdrawAmountExceedDepositException.java
+
+### Test Cases:
+
+- Test throwing `WithdrawAmountExceedDepositException` with a custom message.
+
+### WithdrawAmountNonPositiveException.java
+
+### Test Cases:
+
+- Test throwing `WithdrawAmountNonPositiveException` with a custom message.
+
+### DepositTransaction.java
+
+### Test Cases:
+
+- Test creating deposit transaction with the correct details.
+
+### TransactionHistoryManager.java
+
+### Test Cases:
+
+- Test adding a transaction to the transaction history.
+- Test retrieving transaction history for a specific account.
+
+### WithdrawTransaction.java
+
+### Test Cases:
+
+- Test creating withdraw transaction with the correct details.
+
+### BankTeller.java
+
+### Test Cases:
+
+- Test BankTeller start method initiates the banking application correctly.
+
+### Main.java
+
+### Test Cases:
+
+- Test Main class executes without errors.
+
+### Test Data:
+
+- Prepare test data for deposit, withdrawal, and printing statement scenarios.
+- Include positive cases, negative cases, and boundary cases to cover various scenarios.
+
+### Test Execution:
+
+- Execute each test case individually to verify its functionality.
+- Ensure that all tests pass successfully.
+- Use mocking frameworks like Mockito to mock external dependencies and isolate components for unit testing.
+- Use code coverage tools to ensure that all lines of code are covered by unit tests.
+
+By following this unit test plan, you can ensure comprehensive test coverage and validate the functionality of each component in the banking system.
+
+### Integration Test Plan
 
 Integration tests should simulate the entire user interaction flow from start to finish, including:
 
