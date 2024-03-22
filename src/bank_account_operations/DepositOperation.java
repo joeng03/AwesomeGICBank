@@ -20,6 +20,7 @@ public class DepositOperation implements BankAccountOperation {
         this.account = account;
     }
 
+    @Override
     public void execute() throws BankAccountOperationException {
         System.out.println(DEPOSIT_MESSAGE);
         double depositAmount = scanner.nextDouble();

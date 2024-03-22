@@ -7,11 +7,11 @@ import java.text.SimpleDateFormat;
 /**
  * Transaction class represents a single transaction.
  */
-public class Transaction {
+public abstract class Transaction {
 
     public static final String DATE_FORMAT = "dd MMM yyyy hh:mm:ss a";
 
-    public static final String ROW_FORMAT = "%-23s | $%-12.2f | $%.2f";
+    public static final String ROW_FORMAT = "%-23s | %-12.2f | %.2f";
     private Date date = null;
     private double amount = 0.0;
     private double balance = 0.0;
@@ -22,9 +22,12 @@ public class Transaction {
      * @param balance The balance after the transaction.
      */
     public Transaction(double amount, double balance) {
+
         this.date = new Date();
         this.amount = amount;
         this.balance = balance;
+
+        assert balance >= 0.0 : "Balance should be non-negative after initializing the Transaction instance.";
     }
 
     /**

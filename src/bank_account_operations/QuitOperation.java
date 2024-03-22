@@ -14,6 +14,7 @@ public class QuitOperation implements BankAccountOperation {
         this.scanner = scanner;
     }
 
+    @Override
     public void execute() {
         System.out.println(GOODBYE_MESSAGE);
         scanner.close();

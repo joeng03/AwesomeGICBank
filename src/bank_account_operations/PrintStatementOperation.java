@@ -12,7 +12,8 @@ public class PrintStatementOperation implements BankAccountOperation {
         this.account = account;
     }
 
+    @Override
     public void execute() {
-        account.printStatement();
+        System.out.println(account.getStatement());
     }
 }
