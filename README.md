@@ -1,4 +1,4 @@
-# AwesomeGIC Bank: Documentation
+# 🏦 AwesomeGIC Bank: Documentation
 
 ## User stories
 
@@ -18,11 +18,15 @@
 
 ### Directory Structure
 
-```jsx
+```c
 │   BankTeller.java
+│   Main.java
 │
 ├───accounts
 │       BankAccount.java
+│       DepositService.java
+│       PrintStatementService.java
+│       WithdrawService.java
 │
 ├───bank_account_operations
 │       BankAccountOperation.java
@@ -39,43 +43,44 @@
 │       WithdrawAmountNonPositiveException.java
 │
 └───transactions
+        DepositTransaction.java
         Transaction.java
-
+        WithdrawTransaction.java
 ```
 
 ### **Transaction**s
 
-![Untitled](AwesomeGIC%20Bank%20Documentation%205a309353adeb48d096b20623e5dc11af/Untitled.png)
+![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled.png)
 
 A class that keeps track of the details of a single transaction, such as date, amount, and balance. There are 2 types of **Transaction**s, which are `WithdrawTransaction` and `DepositTransaction`.
 
 ### Bank Account Operations
 
-![Untitled](AwesomeGIC%20Bank%20Documentation%205a309353adeb48d096b20623e5dc11af/Untitled%201.png)
+![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 1.png)
 
 The 4 main operations, **Deposit**, **Withdraw**, **PrintStatement,** and **Quit**, all implement the **execute()** method from the **BankAccountOperation** interface. **BankAccountOperationFactory** is a factory class that creates operations of type **BankAccountOperation** for the bank account. It applies the Factory Method design pattern.
 
 ### the BankAccount class
 
-![Untitled](AwesomeGIC%20Bank%20Documentation%205a309353adeb48d096b20623e5dc11af/Untitled%202.png)
+![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 2.png)
 
 The **BankAccount** class implements the logic to support the main functionalities of a bank account, through the **deposit()**, **withdraw(),** and **getStatement()** methods. It keeps track of the current balance of the bank account and a historical list of **Transaction**s, ordered by transaction date.
 
 ### the BankTeller class
 
-![Untitled](AwesomeGIC%20Bank%20Documentation%205a309353adeb48d096b20623e5dc11af/Untitled%203.png)
+![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 3.png)
 
 The BankTeller class plays the role of a bank teller in a real-world scenario, handling user requests and bank responses through I/O operations. It is the sole entry point to interact with a bank account.
 
 ### Exceptions
 
-![Untitled](AwesomeGIC%20Bank%20Documentation%205a309353adeb48d096b20623e5dc11af/Untitled%204.png)
+![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 4.png)
 
 The exceptions focus on handling scenarios where the user input will result in an invalid state for the bank account, for example, depositing or withdrawing a non-positive amount of money, or withdrawing more than the existing deposit (we do not support loans yet!). These exceptions extend the abstract class **BankAccountOperationException,** which itself extends the **Exception** class.
 
 ### UML Diagram (Overview)
 
-![output.png](AwesomeGIC%20Bank%20Documentation%205a309353adeb48d096b20623e5dc11af/output.png)
+![output.png](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/output.png)
 
 ## **Software Engineering Principles**
 
@@ -108,7 +113,7 @@ For example, the `BankTeller` constructor takes in `Scanner`, `BankAccount`, and
 
 ## Representation Invariants and Assertions
 
-![Untitled](AwesomeGIC%20Bank%20Documentation%205a309353adeb48d096b20623e5dc11af/Untitled%205.png)
+![Untitled](AwesomeGIC Bank Documentation 5a309353adeb48d096b20623e5dc11af/Untitled 5.png)
 
 The representation invariant for the bank account is that balances must be non-negative at all times. This condition is asserted at the beginning and end of every mutating function (`deposit()` and `withdraw()`), at the beginning of every non-mutating function (`getStatement()`), and at the end of the constructor (`BankAccount()`). Through the extensive use of assertions, we greatly reduce the possibility of introducing bugs that violate the representation invariants during the development process.
 
@@ -118,10 +123,43 @@ As opposed to using naive String concatenation, which results in a time complexi
 
 ## Possible Future Enhancements
 
+### Supporting Concurrency
+
+Concurrent access from multiple clients is a critical scenario in a banking system. In a multi-client, concurrent environment, each client could be represented by a thread in the `BankTeller` thread pool. To achieve this, methods like `deposit()`, `withdraw()`, and `getStatement()` in the `BankAccount` class should be explicitly synchronized using the `synchronized` keyword. Outside synchronized blocks, shared data structures such as `ArrayList`, used to store transaction history, must be synchronized using the Java `Collections` library to avoid thread safety issues. By synchronizing access to these resources, we can safeguard against race conditions, thus maintaining the integrity of bank account data.
+
 ### Supporting Different Types of Bank Accounts
 
 To accommodate various types of bank accounts like `FixedDepositBankAccount`, `SavingsBankAccount`, and `SalaryBankAccount`, it's essential to abstract common attributes and methods from the current BankAccount class into an abstract class or multiple interfaces. This abstraction allows all bank account types to extend the behavior of the base class or implement the required interfaces, ensuring consistency across different account types while enabling specific functionalities unique to each account type.
 
-### Supporting Concurrency
+### Testing the Application
 
-Concurrent access from multiple clients is a critical scenario in a banking system. In a multi-client, concurrent environment, each client could be represented by a thread in the `BankTeller` thread pool. To achieve this, methods like `deposit()`, `withdraw()`, and `getStatement()` in the `BankAccount` class should be explicitly synchronized using the `synchronized` keyword. Outside synchronized blocks, shared data structures such as `ArrayList`, used to store transaction history, must be synchronized using the Java `Collections` library to avoid thread safety issues. By synchronizing access to these resources, we can safeguard against race conditions, thus maintaining the integrity of bank account data.
+Unit testing and integration testing are essential components of ensuring the reliability and correctness of the banking application.
+
+### Unit Testing
+
+1. **Deposit Functionality**: Unit tests should verify that the deposit functionality works as expected. This includes:
+    - Testing depositing various amounts of money.
+    - Checking that the balance is updated correctly after each deposit.
+    - Ensuring that appropriate error handling is in place for invalid inputs.
+2. **Withdrawal Functionality**: Unit tests should cover all aspects of the withdrawal functionality, such as:
+    - Testing withdrawals of different amounts.
+    - Verifying that the balance is updated correctly after each withdrawal.
+    - Checking for insufficient funds scenarios and appropriate error handling.
+3. **Print Statement Functionality**: Unit tests should validate the print statement functionality by:
+    - Verifying that the printed statement contains the correct transaction details.
+    - Ensuring that the statement includes the appropriate header and formatting.
+4. **Quit Functionality**: Although straightforward, unit tests should confirm that the application exits gracefully when the user chooses to quit.
+
+### Integration Testing
+
+Integration tests should simulate the entire user interaction flow from start to finish, including:
+
+- Launching the application.
+- Performing multiple deposits, withdrawals, and printing statements.
+- Exiting the application.
+
+1. **Error Handling**: Integration tests should verify that the application handles errors gracefully, such as invalid user inputs or unexpected system behavior.
+2. **Concurrency**: If the application supports concurrent access, integration tests should ensure that concurrent operations do not result in data corruption or inconsistencies.
+3. **Input/Output Validation**: Integration tests should validate that the application correctly interprets user inputs and generates the expected outputs.
+
+By conducting comprehensive unit and integration tests, developers can ensure that the banking application functions as intended, providing users with a reliable and seamless banking experience while maintaining the security and integrity of their financial transactions.
